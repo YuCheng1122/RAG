@@ -60,7 +60,14 @@ async function main() {
     } while (runstatus !== "completed");
 
     const message = await openai.beta.threads.messages.list(threadId);
-    console.log(message.data[0].content[0].text.value);
+
+    // 假設我們處理第一條消息的第一個 content 元素
+    const value = message.data[0].content[0].text.value;
+
+    // 使用正則表達式來移除類似於 &#8203;``【oaicite:0】``&#8203; 的模式
+    const cleanedValue = value.replace(/【\d+†source】/g, "");
+
+    console.log("Cleaned Value:", cleanedValue);
   }
 
   rl.close();
